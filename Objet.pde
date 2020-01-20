@@ -1,12 +1,15 @@
 class Objet {
+  
+  public final static int HAUT = 0, BAS = 1, GAUCHE = 2, DROITE = 3;
 
   public PVector position, vitesse, acceleration;
   public boolean est_mobile, est_destructible;
   public int pv, degats;
   public Forme forme;
-  public String contact;
   public boolean regardeDroite;
-  public long lastTir;
+  public Objet[] objetsContact;
+  public Arme arme;
+  public AnimationSet animationSet;
   
   public Objet(int x, int y) 
   {
@@ -22,9 +25,10 @@ class Objet {
     est_destructible = destructible;
     this.pv = pv;
     this.degats = degats;
-    contact = null;
+    objetsContact = new Objet[4];
     forme = new Rectangle(position, TILE_W, TILE_H);
     regardeDroite = true;
+    arme = new Arme(this, 1, true, 25);
   }
   
   public boolean checkCollision(Objet o)
@@ -51,7 +55,17 @@ class Objet {
   
   public void afficher()
   {
-   image(tileset.getImage("default"), position.x, position.y, TILE_W, TILE_H);
+    if (animationSet == null)
+      image(ressources.get("default"), position.x, position.y, TILE_W, TILE_H);
+    else {
+      if (abs(vitesse.x) < 0.01)
+        animationSet.change(0);
+      else if (regardeDroite)
+        animationSet.change(1);
+      else if (!regardeDroite)
+        animationSet.change(2);
+      image(animationSet.getFrame(), position.x, position.y, TILE_W, TILE_H);
+    }
   }
   
   public boolean isPerso()
@@ -67,7 +81,8 @@ class Objet {
   
   public void evoluer(float duree)
   {    
-    contact = null;
+    for (int i = 0; i< 4; i++)
+      objetsContact[i] = null;
     
     appliquerForce(monde.gravite);
     
@@ -87,9 +102,9 @@ class Objet {
       position.y = prevY;
       
       if (vitesse.y > 0)
-        contact = "bas";
+        objetsContact[BAS] = o;
       else
-        contact = "haut";
+        objetsContact[HAUT] = o;
       
       vitesse.y = 0;
       
@@ -107,9 +122,9 @@ class Objet {
       position.x = prevX;
       
       if (vitesse.x > 0)
-        contact = "droite"; //On va a droite, on est bloque a droite
+        objetsContact[DROITE] = o;
       else
-        contact = "gauche";
+        objetsContact[GAUCHE] = o;
 
       traiterCollision(o);
       o.traiterCollision(this);
@@ -129,20 +144,18 @@ class Objet {
   
   public void sauter()
   {
-    if (contact != null && contact != "haut")
+    if (objetsContact[BAS] != null || 
+        (objetsContact[DROITE] != null && !objetsContact[DROITE].est_mobile) || 
+        (objetsContact[GAUCHE] != null && !objetsContact[GAUCHE].est_mobile))
       vitesse.y = - 300;
   }
   public void tirer()
   {
-    long now = millis();
-    if (now - lastTir < 400)
-      return;
-      
-    PVector position = forme.getCenter().add(regardeDroite ? 10 : -10, 0);
-    PVector vitesse = new PVector(regardeDroite ? 500 : -500, 0);
-    Projectile proj = new Projectile(position, vitesse, this);
-    
-    monde.ajouterProjectile(proj);
-    lastTir = now;
+    arme.utiliser();
+    if (animationSet != null)
+    {
+      animationSet.change(3);
+      animationSet.queue(0);
+    }
   }
 }

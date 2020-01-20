@@ -1,19 +1,46 @@
-import java.util.Map;
-
-class Tileset {
-  private String noms[] = {"ennemi", "sol", "default", "joueur", "tir"};
-  private String fichiers[] = {"dougie.png", "sol.png", "boite.png", "axel.png", "flamme.png"};
-  private Map<String, PImage> images;
-  
-  public Tileset()
+class Tileset{
+ private int w,h,wTile,hTile;
+  private ArrayList<PImage> images=null;
+ 
+ Tileset(String name, int nbX, int nbY)
   {
-    images = new HashMap<String, PImage>();
-    for (int i = 0; i < noms.length; i++)
-      images.put(noms[i], loadImage(fichiers[i]));
+    	PImage img=ressources.get(name);
+    	w=nbX;
+    	h=nbY;
+    	wTile=img.width/w;
+    	hTile=img.height/h;
+      images=new ArrayList<PImage>();
+      for (int y=0;y<nbY;y++)
+      {
+        for (int x=0;x<nbX;x++)
+          images.add(img.get(x*wTile,y*hTile,wTile,hTile));
+      }
+  }
+
+  PImage get(int index)
+  {
+    if (images==null)
+      return null;
+  	return images.get(index);
   }
   
-  public PImage getImage(String nom)
+  
+  int getTileX()
   {
-    return images.get(nom);
+    return w;
+  }
+  
+  int getTileY()
+  {
+    return h;
+  }
+  int getTileW()
+  {
+    return wTile;
+  }
+  
+  int getTileH()
+  {
+    return hTile;
   }
 }

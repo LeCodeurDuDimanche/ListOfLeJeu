@@ -7,6 +7,6 @@ class Plateforme extends Objet {
   
   public void afficher()
   {
-   image(tileset.getImage("sol"), position.x, position.y, TILE_W, TILE_H);
+   image(ressources.get("sol"), position.x, position.y, TILE_W, TILE_H);
   }
 }

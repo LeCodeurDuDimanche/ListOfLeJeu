@@ -1,15 +1,15 @@
 Monde monde;
 Clavier clavier;
-Tileset tileset;
+Images ressources;
 int TILE_W = 32, TILE_H = 32;
 
 void setup()
 {
   noStroke();
   size(640, 480);
-  monde = new Monde(100, 20);
+  ressources = new Images();
+  monde = new Monde(sketchPath() + "/niveau.lvl");
   clavier = new Clavier();
-  tileset = new Tileset();
 }
 
 void draw()

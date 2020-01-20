@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.FileReader;
+import java.io.BufferedReader;
 
 
 class Monde {
@@ -16,6 +18,18 @@ class Monde {
   
   public Monde(int w, int h)
   {
+    init(w, h);
+     for (int x = 0; x < w; x++)
+      objets.add(new Plateforme(x, h - 1));
+  }
+  
+  public Monde(String fichier) 
+  {
+    load(fichier);
+  }
+  
+  private void init(int w, int h)
+  {
     this.w = w;
     this.h = h;
     
@@ -27,22 +41,67 @@ class Monde {
     vue = new Vue(joueur.position, width / TILE_W, height / TILE_H, w, h);
     
     gravite = new PVector(0, 5);
-    
-    
-    for (int i = 0; i < 10; i++)
-    {
-      objets.add(new Objet(200 + 100 * i + (int)random(0, 100), 200));
-      ennemis.add(new Ennemi(200 + 200 * i + (int)random(-100, 100), h * TILE_H - 80));
+  }
+  
+  private void loadObjet(int x, int y, String[] tokens)
+  {
+    switch(tokens[0]) {
+           case "O":
+             objets.add(new Objet(x, y, Boolean.parseBoolean(tokens[3]),  Boolean.parseBoolean(tokens[4]), Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6])));
+             break;
+           case "J":
+             monde.joueur = new Joueur(x, y);
+             break;
+           case "E":
+             ennemis.add(new Ennemi(x, y));
+             break;
+           case "P":
+             objets.add(new Plateforme(x, y));
+             break;
+       }
+  }
+  
+  public void load(String fichier) {
+      BufferedReader stream = null;
+    try {
+       stream = new BufferedReader(new FileReader(fichier));
+       
+       String ligne = stream.readLine();
+       String[] coords = ligne.split(" ");
+       init(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
+       
+       while ((ligne = stream.readLine()) != null)
+       {
+         String[] tokens = ligne.split(" ");
+         int x1, x2, y1, y2;
+         if (tokens[1].contains(":"))
+         {
+           String[] range = tokens[1].split(":");
+           x1 = Integer.parseInt(range[0]);
+           x2 = Integer.parseInt(range[1]);
+         }
+         else
+           x1 = x2 = Integer.parseInt(tokens[1]);
+           
+         if (tokens[2].contains(":"))
+         {
+           String[] range = tokens[2].split(":");
+           y1 = Integer.parseInt(range[0]);
+           y2 = Integer.parseInt(range[1]);
+         }
+         else 
+           y1 = y2 = Integer.parseInt(tokens[2]);
+       
+         for (int x = x1; x <= x2; x++)
+           for (int y = y1; y <= y2; y++)
+             loadObjet(x, y, tokens);;
+       }
+         
+       stream.close();
+    } catch (IOException e) {
+      System.err.println(e);
+      exit();
     }
-    
-    for (int x = 0; x < w; x++)
-      objets.add(new Plateforme(x, h - 1));
-      
-    objets.add(new Plateforme(5, h - 3));
-    objets.add(new Plateforme(6, h - 3));
-    objets.add(new Plateforme(8, h - 5));
-    objets.add(new Plateforme(9, h - 5));
-    
   }
   
   private void enleverMorts(List<? extends Objet> objets)

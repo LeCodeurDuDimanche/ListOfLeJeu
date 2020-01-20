@@ -24,7 +24,7 @@ class Projectile extends Objet {
   
   public void afficher()
   {
-    image(tileset.getImage("tir"), position.x - 5, position.y - 5, 10, 10);
+    image(ressources.get("tir"), position.x - 5, position.y - 5, 10, 10);
   }
   
   public boolean affecte(Objet o)

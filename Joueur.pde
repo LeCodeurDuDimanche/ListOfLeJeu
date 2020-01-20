@@ -3,34 +3,22 @@ class Joueur extends Objet {
   public Joueur(int x, int y)
   {
     super(x, y);
+    pv = 400;
+    arme.cadenceTir = 2;
+    arme.degats = 50;
+    animationSet = new AnimationSet(new Tileset("ennemi", 2, 4), 6, 0);
   }
-  
-  public void afficher()
-  {
-   pushMatrix();
-   translate(position.x + TILE_W / 2, position.y);
-   if (regardeDroite)
-     scale(-1, 1);
-   image(tileset.getImage("joueur"), - TILE_W / 2, 0, TILE_W, TILE_H);
-   popMatrix();
-  }
-  
+
   public void evoluer(float duree)
   {
     super.evoluer(duree);
     
     //Friction
-    if (contact == "bas")
+    if (objetsContact[BAS] != null)
     {
-      vitesse.x *= 0.8;
+      vitesse.x *= 0.5;
     }
     
-  }
-  
-  public void sauter()
-  {
-    if (contact != null && contact != "haut")
-      vitesse.y = - 450;
   }
   
   public boolean isPerso()
