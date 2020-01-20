@@ -51,7 +51,7 @@ class Monde {
  
     while(i.hasNext()) {
         Objet o = i.next();
-        if (o.pv <= 0) {
+        if (o.pv <= 0 || o.position.y > h * TILE_H + 100) {
             i.remove();
         }
     }
@@ -81,7 +81,7 @@ class Monde {
     enleverMorts(objets);
     enleverMorts(projectiles);
     
-    return joueur.pv > 0;
+    return joueur.pv > 0 && joueur.position.y <= h * TILE_H + 100;
   }
   
   public Objet checkCollision(Objet obj)

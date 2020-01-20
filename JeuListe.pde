@@ -15,21 +15,30 @@ void setup()
 void draw()
 {
   background(0);
-  monde.evoluer();
-  monde.afficher();
-  
-  PVector vitesse = monde.joueur.vitesse;
-  float depl = 150;
-  if (clavier.estAppuye(clavier.DROITE))
-      vitesse.x = depl;
-  else if (clavier.estAppuye(clavier.GAUCHE))
-    vitesse.x = -depl;
-  
-  if (clavier.estAppuye(clavier.SAUT))
-    monde.joueur.sauter();
+  if (monde.evoluer()) {
+    monde.afficher();
     
-  if (clavier.estAppuye(clavier.TIR))
-    monde.joueur.tirer();
+    PVector vitesse = monde.joueur.vitesse;
+    float depl = 150;
+    if (clavier.estAppuye(clavier.DROITE))
+        vitesse.x = depl;
+    else if (clavier.estAppuye(clavier.GAUCHE))
+      vitesse.x = -depl;
+    
+    if (clavier.estAppuye(clavier.SAUT))
+      monde.joueur.sauter();
+      
+    if (clavier.estAppuye(clavier.TIR))
+      monde.joueur.tirer();
+  }
+  else
+  {
+    fill(255);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    text("NIQUE TA MERE LA CHIENNE", width / 2, height / 2);
+    noLoop();
+  }
 }
 
 void keyPressed()
