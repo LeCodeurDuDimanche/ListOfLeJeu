@@ -28,7 +28,7 @@ class Objet {
     objetsContact = new Objet[4];
     forme = new Rectangle(position, TILE_W, TILE_H);
     regardeDroite = true;
-    arme = new Arme(this, 1, true, 25);
+    arme = null;
   }
   
   public boolean checkCollision(Objet o)
@@ -50,7 +50,7 @@ class Objet {
   public void traiterCollision(Objet o)
   {
     if (est_destructible)
-      this.pv -= o .degats;
+      this.pv -= o.degats;
   }
   
   public void afficher()
@@ -58,13 +58,21 @@ class Objet {
     if (animationSet == null)
       image(ressources.get("default"), position.x, position.y, TILE_W, TILE_H);
     else {
-      if (abs(vitesse.x) < 0.01)
+      
+      if (arme != null && millis() - arme.lastAttaque < 500)
+        animationSet.change(3);
+      else if (abs(vitesse.x) < 0.01)
         animationSet.change(0);
-      else if (regardeDroite)
+      else
         animationSet.change(1);
-      else if (!regardeDroite)
-        animationSet.change(2);
-      image(animationSet.getFrame(), position.x, position.y, TILE_W, TILE_H);
+      
+      pushMatrix();
+      translate(position.x + TILE_W / 2, 0);
+      if (!regardeDroite)
+        scale(-1, 1);
+        
+      image(animationSet.getFrame(), -TILE_W / 2, position.y, TILE_W, TILE_H);
+      popMatrix();
     }
   }
   
@@ -151,11 +159,17 @@ class Objet {
   }
   public void tirer()
   {
+    if (arme == null)
+      return;
+ 
     arme.utiliser();
-    if (animationSet != null)
-    {
-      animationSet.change(3);
-      animationSet.queue(0);
-    }
+  }
+  
+   public boolean affecte(Objet o)
+  {
+    if (o instanceof Projectile)
+      return o.affecte(this);
+    
+    return true;
   }
 }

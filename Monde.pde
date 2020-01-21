@@ -21,11 +21,24 @@ class Monde {
     init(w, h);
      for (int x = 0; x < w; x++)
       objets.add(new Plateforme(x, h - 1));
+      
+    
+     for (int x = 0; x < 5; x++)
+      objets.add(new Ennemi(x * 100, 50));
   }
   
   public Monde(String fichier) 
   {
     load(fichier);
+  }
+  
+  private void calculerAffichage()
+  {
+    for (Objet o :objets)
+    {
+      if (o instanceof Plateforme)
+        ((Plateforme) o).calculerAffichage();
+    }
   }
   
   private void init(int w, int h)
@@ -72,28 +85,16 @@ class Monde {
        
        while ((ligne = stream.readLine()) != null)
        {
-         String[] tokens = ligne.split(" ");
-         int x1, x2, y1, y2;
-         if (tokens[1].contains(":"))
-         {
-           String[] range = tokens[1].split(":");
-           x1 = Integer.parseInt(range[0]);
-           x2 = Integer.parseInt(range[1]);
-         }
-         else
-           x1 = x2 = Integer.parseInt(tokens[1]);
+         ligne = ligne.trim();
+         if (ligne.length() == 0 || ligne.charAt(0) == '#')
+           continue;
            
-         if (tokens[2].contains(":"))
-         {
-           String[] range = tokens[2].split(":");
-           y1 = Integer.parseInt(range[0]);
-           y2 = Integer.parseInt(range[1]);
-         }
-         else 
-           y1 = y2 = Integer.parseInt(tokens[2]);
-       
-         for (int x = x1; x <= x2; x++)
-           for (int y = y1; y <= y2; y++)
+         String[] tokens = ligne.split(" ");
+         Range xRange = new Range(tokens[1]);
+         Range yRange = new Range(tokens[2]);
+                  
+         for (int x : xRange)
+           for (int y : yRange)
              loadObjet(x, y, tokens);;
        }
          
@@ -152,7 +153,7 @@ class Monde {
   {
     for (Objet o: objets)
     {
-      if (obj != o && aIgnorer != o && o.checkCollision(obj))
+      if (obj != o && aIgnorer != o && o.affecte(obj) && o.checkCollision(obj))
         return o;
     }
     
@@ -165,10 +166,10 @@ class Monde {
     {
       for (Ennemi e: ennemis)
       {
-        if (obj != e && aIgnorer != e && (!(obj instanceof Projectile) || !(((Projectile) obj).tireur instanceof Ennemi) ) && e.checkCollision(obj))
+        if (obj != e && aIgnorer != e && e.affecte(obj) && e.checkCollision(obj))
           return e;
       }
-      if (obj != joueur && aIgnorer != joueur && (!(obj instanceof Projectile) || ((Projectile) obj).tireur != joueur) && joueur.checkCollision(obj))
+      if (obj != joueur && aIgnorer != joueur && joueur.affecte(obj) && joueur.checkCollision(obj))
         return joueur;
     }
     return null;

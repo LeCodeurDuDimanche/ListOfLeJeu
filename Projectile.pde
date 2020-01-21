@@ -20,6 +20,8 @@ class Projectile extends Objet {
   {    
     appliquerForce(PVector.mult(monde.gravite, -1));
     super.evoluer(duree);
+    if (position.x < -100 || position.x > 100 + monde.w * TILE_W)
+      pv = 0;
   }
   
   public void afficher()
@@ -31,8 +33,11 @@ class Projectile extends Objet {
   {
     if (tireur == o)
       return false;
-    if (tireur != monde.joueur && o instanceof Ennemi)
+    if (tireur != monde.joueur && o.isPerso() && o != monde.joueur)
       return false;
+    if (o instanceof Projectile)
+      return this.affecte(((Projectile) o).tireur);
+      
     return true;
   }
 }

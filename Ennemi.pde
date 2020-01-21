@@ -10,8 +10,8 @@ class Ennemi extends Objet {
     patrouille[0] = new PVector(max(x - 300, 0), y);
     patrouille[1] = new PVector(x + 300, y);
     pointPatrouilleCourant = 0;
-    arme.cadenceTir = 0.5;
-    animationSet = new AnimationSet(new Tileset("ennemi", 2, 4), 4, 0);
+    animationSet = new AnimationSet(ressources.tileset("ennemi"), 4, 0);
+    arme = new Pistolet(this);
     
   }
   
@@ -32,7 +32,6 @@ class Ennemi extends Objet {
     }
       
     vitesse.x = constrain(dest.x - position.x, -120, 120);
-    
     
     if ((vitesse.x > 0 && objetsContact[DROITE] != null) || 
         (vitesse.x < 0 && objetsContact[GAUCHE] != null)) 

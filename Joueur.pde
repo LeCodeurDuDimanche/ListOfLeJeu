@@ -4,9 +4,8 @@ class Joueur extends Objet {
   {
     super(x, y);
     pv = 400;
-    arme.cadenceTir = 2;
-    arme.degats = 50;
-    animationSet = new AnimationSet(new Tileset("ennemi", 2, 4), 6, 0);
+    animationSet = new AnimationSet(ressources.tileset("joueur"), 6, 0);
+    arme = new Couteau(this);
   }
 
   public void evoluer(float duree)

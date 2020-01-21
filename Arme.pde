@@ -18,16 +18,45 @@ class Arme {
     long now = millis();
     if (now - lastAttaque < 1000 / cadenceTir)
       return;
-      
+    
+    PVector position = owner.forme.getCenter();
     if (estDistance) {
-      PVector position = owner.forme.getCenter().add(owner.regardeDroite ? 10 : -10, 0);
+      position.add(owner.regardeDroite ? 10 : -10, 0);
       PVector vitesse = new PVector(owner.regardeDroite ? 500 : -500, 0);
       Projectile proj = new Projectile(position, vitesse, owner);
+      proj.degats = degats;
       
       monde.ajouterProjectile(proj);
     }
     else {
+      position.add(owner.regardeDroite ? TILE_W : -TILE_W, 0);
+      Projectile proj = new Projectile(position, new PVector(), owner);
+      proj.degats = degats;
+      
+      Objet o = monde.checkCollision(proj);
+      
+      if (o != null)
+        o.traiterCollision(proj);
+      
     }
     lastAttaque = now;
+  }
+}
+
+class Pistolet extends Arme{
+  public Pistolet(Objet owner){
+    super(owner, 1, true, 20);
+  }
+}
+
+class Mitraillette extends Arme {
+  public Mitraillette(Objet owner){
+    super(owner, 4, true, 15);
+  }
+}
+
+class Couteau extends Arme {
+  public Couteau(Objet owner){
+    super(owner, 2, false, 20);
   }
 }

@@ -2,9 +2,8 @@ class Tileset{
  private int w,h,wTile,hTile;
   private ArrayList<PImage> images=null;
  
- Tileset(String name, int nbX, int nbY)
+ Tileset(PImage img, int nbX, int nbY)
   {
-    	PImage img=ressources.get(name);
     	w=nbX;
     	h=nbY;
     	wTile=img.width/w;
