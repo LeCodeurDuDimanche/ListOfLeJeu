@@ -80,6 +80,10 @@ class Monde {
        stream = new BufferedReader(new FileReader(fichier));
        
        String ligne = stream.readLine();
+       
+       while ((ligne.length() == 0 || ligne.charAt(0) == '#'))
+         ligne = stream.readLine();
+         
        String[] coords = ligne.split(" ");
        init(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]));
        

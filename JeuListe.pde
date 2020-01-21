@@ -10,8 +10,10 @@ void setup()
 {
   noStroke();
   size(640, 480);
+  
   ressources = new Images();
-  monde = new Monde(sketchPath() + "/niveau.lvl");
+  
+  chargerNiveau(1);
   monde.calculerAffichage();
   clavier = new Clavier();
 }
@@ -29,10 +31,10 @@ void draw()
   }
   
   if (! monde.evoluer())
-    changerNiveau(-1);
+    chargerNiveau(-1);
   
   if (monde.ennemis.size() == 0)
-    changerNiveau(niveau + 1);
+    chargerNiveau(niveau + 1);
   
   monde.afficher();
   
@@ -52,7 +54,7 @@ void draw()
   }
 }
 
-void changerNiveau(int n)
+void chargerNiveau(int n)
 {
   if (n == -1) {
     perdu = true;
@@ -60,6 +62,7 @@ void changerNiveau(int n)
   }
   
   niveau = n;
+  monde = new Monde(sketchPath() + "/niveau-" + n  + ".lvl");
 }
 
 void keyPressed()
