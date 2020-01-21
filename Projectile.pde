@@ -1,6 +1,7 @@
 class Projectile extends Objet {
   
   public Objet tireur;
+  public float distance;
   
   public Projectile(PVector pos, PVector vitesse, Objet tireur)
   {
@@ -9,6 +10,7 @@ class Projectile extends Objet {
     this.tireur = tireur;
     this.degats = 25;
     forme = new Cercle(position, 5);
+    distance = 200;
   }
   
   public void traiterCollision(Objet o)
@@ -17,10 +19,12 @@ class Projectile extends Objet {
   }
   
   public void evoluer(float duree)
-  {    
+  { 
+    PVector oldPos = new PVector(position.x, position.y);
     appliquerForce(PVector.mult(monde.gravite, -1));
     super.evoluer(duree);
-    if (position.x < -100 || position.x > 100 + monde.w * TILE_W)
+    distance -= oldPos.sub(position).mag();
+    if (distance < 0)
       pv = 0;
   }
   

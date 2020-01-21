@@ -27,7 +27,7 @@ class Plateforme extends Objet {
     for (int i = 0; i < 4; i++)
       System.out.print(voisins[i]);
     System.out.println(" => " + position.x + ";" + position.y);
-    indice = 15 - (voisins[3] * 8 + (1 - voisins[1]) * 4 + (1 - voisins[2]) * 2 + voisins[0]);
+    indice = 15 - (voisins[3] * 8 + voisins[1] * 4 + voisins[2] * 2 + voisins[0]);
     System.out.println(" => " + indice);
     
   }

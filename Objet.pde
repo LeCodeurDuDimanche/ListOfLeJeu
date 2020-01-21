@@ -26,7 +26,7 @@ class Objet {
     this.pv = pv;
     this.degats = degats;
     objetsContact = new Objet[4];
-    forme = new Rectangle(position, TILE_W, TILE_H);
+    forme = new Rectangle(position, TILE_W - 1, TILE_H - 1);
     regardeDroite = true;
     arme = null;
   }

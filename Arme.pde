@@ -13,6 +13,15 @@ class Arme {
     this.owner = o;
   }
   
+  protected void tirer(PVector position){
+    position.add(owner.regardeDroite ? 10 : -10, 0);
+    PVector vitesse = new PVector(owner.regardeDroite ? 500 : -500, 0);
+    Projectile proj = new Projectile(position, vitesse, owner);
+    proj.degats = degats;
+    
+    monde.ajouterProjectile(proj);
+  }
+  
   public void utiliser()
   {
     long now = millis();
@@ -21,12 +30,7 @@ class Arme {
     
     PVector position = owner.forme.getCenter();
     if (estDistance) {
-      position.add(owner.regardeDroite ? 10 : -10, 0);
-      PVector vitesse = new PVector(owner.regardeDroite ? 500 : -500, 0);
-      Projectile proj = new Projectile(position, vitesse, owner);
-      proj.degats = degats;
-      
-      monde.ajouterProjectile(proj);
+      tirer(position);
     }
     else {
       position.add(owner.regardeDroite ? TILE_W : -TILE_W, 0);
@@ -40,6 +44,25 @@ class Arme {
       
     }
     lastAttaque = now;
+  }
+}
+
+class Shotgun extends Arme {
+  public Shotgun(Objet owner){
+    super(owner, 1, true, 15);
+  }
+  
+   protected void tirer(PVector position) {
+    position.add(owner.regardeDroite ? 10 : -10, 0);
+    PVector vitesse = new PVector(owner.regardeDroite ? 500 : -500, 0);
+    
+    for (int i = -2; i <= 2; i++)
+    {
+      PVector vitesseProj = new PVector(vitesse.x, vitesse.y).rotate(PI/ 18 * i);
+      Projectile proj = new Projectile(position, vitesseProj, owner);
+      proj.degats = degats;
+      monde.ajouterProjectile(proj);
+    }
   }
 }
 

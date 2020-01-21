@@ -20,9 +20,6 @@ void draw()
 {
   background(0);
   
-  if (frameCount > 20)
-    noLoop();
-  
   if (perdu) {
     fill(255);
     textSize(20);
@@ -33,6 +30,9 @@ void draw()
   
   if (! monde.evoluer())
     changerNiveau(-1);
+  
+  if (monde.ennemis.size() == 0)
+    changerNiveau(niveau + 1);
   
   monde.afficher();
   
