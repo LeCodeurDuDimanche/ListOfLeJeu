@@ -12,7 +12,7 @@ class Ennemi extends Objet {
     pointPatrouilleCourant = 0;
     animationSet = new AnimationSet(ressources.tileset("ennemi"), 4, 0);
     arme = new Pistolet(this);
-    
+    arme.cadenceTir = 0.3;
   }
   
   public void evoluer(float duree)
@@ -30,8 +30,9 @@ class Ennemi extends Objet {
       if (abs(monde.joueur.position.y - position.y) < 40)
         tirer();
     }
-      
-    vitesse.x = constrain(dest.x - position.x, -120, 120);
+    if (PVector.sub(monde.joueur.position, position).add(TILE_W / 2, TILE_H / 2).magSq() > 4 * TILE_W * TILE_W)
+      vitesse.x = constrain(dest.x - position.x, -120, 120);
+    else vitesse.x = 0;
     
     if ((vitesse.x > 0 && objetsContact[DROITE] != null) || 
         (vitesse.x < 0 && objetsContact[GAUCHE] != null)) 

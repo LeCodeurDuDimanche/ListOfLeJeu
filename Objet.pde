@@ -13,7 +13,7 @@ class Objet {
   
   public Objet(int x, int y) 
   {
-    this(x, y, true, true, 100, 0);
+    this(x, y, true, true, 20, 0);
   }
   
   public Objet(int x, int y, boolean mobile, boolean destructible, int pv, int degats)
@@ -114,10 +114,10 @@ class Objet {
       else
         objetsContact[HAUT] = o;
       
-      vitesse.y = 0;
-      
       traiterCollision(o);
       o.traiterCollision(this);
+      
+      vitesse.y = 0;
     }
     
     //On essaye le mouvement en x
@@ -133,7 +133,7 @@ class Objet {
         objetsContact[DROITE] = o;
       else
         objetsContact[GAUCHE] = o;
-
+      
       traiterCollision(o);
       o.traiterCollision(this);
     }
@@ -152,9 +152,7 @@ class Objet {
   
   public void sauter()
   {
-    if (objetsContact[BAS] != null || 
-        (objetsContact[DROITE] != null && !objetsContact[DROITE].est_mobile) || 
-        (objetsContact[GAUCHE] != null && !objetsContact[GAUCHE].est_mobile))
+    if (objetsContact[BAS] != null)
       vitesse.y = - 300;
   }
   public void tirer()

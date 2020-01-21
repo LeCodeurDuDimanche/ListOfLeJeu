@@ -108,7 +108,6 @@ class AnimationSet{
     
     if (anims.get(current).wasReset && queue.size() > 0)
     {
-      System.out.println("Animation has been reset");
       current = queue.get(0);
       queue.remove(0);
       img = anims.get(current).getFrame();

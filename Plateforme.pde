@@ -24,12 +24,7 @@ class Plateforme extends Objet {
       voisins[i] = monde.checkCollision(obj) instanceof Plateforme ? 1 : 0;
     }
     
-    for (int i = 0; i < 4; i++)
-      System.out.print(voisins[i]);
-    System.out.println(" => " + position.x + ";" + position.y);
-    indice = 15 - (voisins[3] * 8 + voisins[1] * 4 + voisins[2] * 2 + voisins[0]);
-    System.out.println(" => " + indice);
-    
+    indice = 15 - (voisins[3] * 8 + voisins[1] * 4 + voisins[2] * 2 + voisins[0]);    
   }
   
   public void afficher()

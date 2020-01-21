@@ -15,6 +15,7 @@ class Monde {
   public long lastTime;
   public Vue vue;
   public PVector gravite;
+  public int objetsDetruits, tirs;
   
   public Monde(int w, int h)
   {
@@ -34,7 +35,7 @@ class Monde {
   
   private void calculerAffichage()
   {
-    for (Objet o :objets)
+    for (Objet o : objets)
     {
       if (o instanceof Plateforme)
         ((Plateforme) o).calculerAffichage();
@@ -63,7 +64,7 @@ class Monde {
              objets.add(new Objet(x, y, Boolean.parseBoolean(tokens[3]),  Boolean.parseBoolean(tokens[4]), Integer.parseInt(tokens[5]), Integer.parseInt(tokens[6])));
              break;
            case "J":
-             monde.joueur = new Joueur(x, y);
+             joueur.position.set(x, y);
              break;
            case "E":
              ennemis.add(new Ennemi(x, y));
@@ -117,6 +118,8 @@ class Monde {
         Objet o = i.next();
         if (o.pv <= 0 || o.position.y > h * TILE_H + 100) {
             i.remove();
+            if (!o.isPerso() && o.est_mobile && !(o instanceof Projectile))
+              objetsDetruits++;
         }
     }
   }
@@ -182,7 +185,11 @@ class Monde {
   public void ajouterProjectile(Projectile p)
   {
     if (checkCollision(p, p.tireur) == null)
+    {
+      if (p.tireur == monde.joueur)
+        tirs++;
       projectiles.add(p);
+    }
   }
   
   
@@ -206,7 +213,7 @@ class Monde {
       if (vue.estDansVue(e))
         e.afficher();
     
-    if (vue.estDansVue(joueur))
+    if (vue.estDansVue(joueur) && joueur.pv > 0)
       joueur.afficher();
       
     popMatrix();
