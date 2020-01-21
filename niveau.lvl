@@ -1,4 +1,11 @@
+# Taille de la map, en tiles
 50 20
+
+# Format : TypeObjet x y
+# x : x1[[:x2];increment] => de x1 a x2 tous les increment
+# y : y1[[:y2];increment]
+# TypeObjet: P plateforme, E ennemi, O objet (+ est_destructible est_mobile pv degats), J joueur
+
 P 0:50 19
 P 0:50 18
 
