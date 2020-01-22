@@ -70,29 +70,6 @@ class Grenade extends Projectile {
      exploser();
   }
   
-  public void exploser()
-  {
-     Tileset exp = ressources.tileset("explosion");
-     monde.animations.add(new AnimationRect(new Animation(exp, 0, exp.getTileX() * exp.getTileY() - 1, 100), (int) position.x, (int) position.y, 50, 50));
-
-     Projectile obj = new Projectile(position, new PVector(), this);
-     obj.forme = new Cercle(obj.position, 40);
-     obj.pv = 100;
-     
-     Objet collider = monde.checkCollision(obj, this);
-     int i = 0;
-     while (collider != null && collider != monde.joueur && collider != monde.boss && i++ < 20)
-     {
-       if (collider.est_destructible) collider.pv = 0;
-       obj.pv = 100;
-       collider = monde.checkCollision(obj);
-     }
-     
-     if (collider == monde.joueur) monde.joueur.pv -= degats;
-     if (collider == monde.boss && monde.boss != null) monde.boss.pv -= degats;
-      
-  }
-  
   public void afficher()
   {
     pushMatrix();

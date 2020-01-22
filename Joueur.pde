@@ -14,6 +14,10 @@ class Joueur extends Objet {
       arme = new LanceGrenade(this);
       arme.cadenceTir = .8;
     }
+    else if (niveau == 3)
+    {
+      arme = new Mitraillette(this);
+    }
   }
 
   public void evoluer(float duree)

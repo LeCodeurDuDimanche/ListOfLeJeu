@@ -80,9 +80,6 @@ class Monde {
              p.est_destructible = false;
              objets.add(p);
              break;
-           case "N":
-             ennemis.add(new Ninja(x, y));
-             break;
            case "BossStan":
              boss = new BossStan(x, y);
              break;

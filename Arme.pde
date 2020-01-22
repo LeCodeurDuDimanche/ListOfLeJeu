@@ -47,6 +47,23 @@ class Arme {
   }
 }
 
+class PistoletFocus extends Arme {
+
+  public PistoletFocus(Objet owner) {
+    super(owner, 1, true, 20);
+  }
+  
+  protected void tirer(PVector position) {
+    position.add(owner.regardeDroite ? 10 : -10, 0);
+    PVector vitesse = PVector.sub(monde.joueur.position, position).setMag(350);
+    Projectile proj = new Projectile(position, vitesse, owner);
+    proj.degats = degats;
+    monde.ajouterProjectile(proj);
+  }
+    
+
+}
+
 class Shotgun extends Arme {
   public Shotgun(Objet owner){
     super(owner, 1, true, 15);

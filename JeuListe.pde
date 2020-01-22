@@ -24,7 +24,7 @@ void setup()
   font = createFont("airstrike.ttf", 42);
   textFont(font);
   
-  niveau = 1;
+  niveau = 3;
   monde = new Monde(sketchPath() + "/niveau-" + niveau + ".lvl");
   monde.calculerAffichage();
   fond = "fond-" + niveau;
