@@ -2,6 +2,7 @@ class Projectile extends Objet {
   
   public Objet tireur;
   public float distance;
+  public boolean gravite;
   
   public Projectile(PVector pos, PVector vitesse, Objet tireur)
   {
@@ -11,17 +12,21 @@ class Projectile extends Objet {
     this.degats = 25;
     forme = new Cercle(position, 5);
     distance = 500;
+    gravite = false;
   }
   
   public void traiterCollision(Objet o)
   {
      this.pv = 0;
+     if (o.est_destructible)
+       o.pv -= degats;
+     degats = 0;
   }
   
   public void evoluer(float duree)
   { 
     PVector oldPos = new PVector(position.x, position.y);
-    appliquerForce(PVector.mult(monde.gravite, -1));
+    if (!gravite) appliquerForce(PVector.mult(monde.gravite, -duree));
     super.evoluer(duree);
     distance -= oldPos.sub(position).mag();
     if (distance < 0)
@@ -54,11 +59,14 @@ class Grenade extends Projectile {
     this.degats = 20;
     forme = new Cercle(position, 12);
     distance= 2500;
+    gravite = true;
   }
   
   public void traiterCollision(Objet o)
   {
      this.pv = 0;
+     if (o.est_destructible)
+       o.pv -= degats;
      exploser();
   }
   
@@ -69,23 +77,20 @@ class Grenade extends Projectile {
 
      Projectile obj = new Projectile(position, new PVector(), this);
      obj.forme = new Cercle(obj.position, 40);
+     obj.pv = 100;
      
      Objet collider = monde.checkCollision(obj, this);
      int i = 0;
      while (collider != null && collider != monde.joueur && collider != monde.boss && i++ < 20)
      {
        if (collider.est_destructible) collider.pv = 0;
+       obj.pv = 100;
        collider = monde.checkCollision(obj);
      }
      
      if (collider == monde.joueur) monde.joueur.pv -= degats;
+     if (collider == monde.boss && monde.boss != null) monde.boss.pv -= degats;
       
-  }
-  
-  public void evoluer(float duree)
-  { 
-    appliquerForce(monde.gravite);
-     super.evoluer(duree);
   }
   
   public void afficher()

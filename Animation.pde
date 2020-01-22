@@ -56,9 +56,10 @@ class Animation{
   
    if (now-lastTime>delay)
    {
+     int prevIndex = index;
      index += (now - lastTime) / delay;
      index %= frames.size();
-     wasReset = index == 0;
+     wasReset = index < prevIndex;
      lastTime=now;
     }
      return frames.get(index);
