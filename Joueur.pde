@@ -4,7 +4,7 @@ class Joueur extends Objet {
   {
     super(x, y);
     animationSet = new AnimationSet(ressources.tileset("ennemi"), 6, 0);
-     this.pv = 60;
+     this.pv = 100;
     if (niveau == 1) {
       arme = new Pistolet(this);
       arme.cadenceTir = 1.5;
@@ -13,6 +13,10 @@ class Joueur extends Objet {
     {
       arme = new LanceGrenade(this);
       arme.cadenceTir = .8;
+    }
+    else if (niveau == 3)
+    {
+      arme = new Mitraillette(this);
     }
   }
 

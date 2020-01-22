@@ -1,5 +1,5 @@
 # Taille de la map, en tiles
-65 20
+80 20
 
 # Format : TypeObjet x y
 # x : x1[[:x2];increment] => de x1 a x2 tous les increment
@@ -26,4 +26,4 @@ E 1184 128
 O 960 520 true true 0 100
 
 
-BossColt 1850 400
+BossStan 1850 400
