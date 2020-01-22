@@ -37,6 +37,8 @@ void draw()
 {
   background(0);
   
+  image(ressources.get("fond-" + niveau), map(monde.vue.positionVue.x, 0, monde.w, -200, 0), map(monde.vue.positionVue.y, 0, monde.h, -200, 0), width + 200, height + 200);
+  
   if (fini) {
     fill(100, 0, 0, 200);
     rect(0, height / 2 - height / 4, 0, height / 2);

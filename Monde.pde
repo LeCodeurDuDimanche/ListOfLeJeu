@@ -265,7 +265,7 @@ class Monde {
     {
        textSize(24);
        text(boss.nom, width - 300, height - 15);
-       dessinerBarreDeVie(monde.boss.pv, 150, width - 230, height - 25, 200, 20);
+       dessinerBarreDeVie(monde.boss.pv, 220, width - 230, height - 25, 200, 20);
     }
   }
   
