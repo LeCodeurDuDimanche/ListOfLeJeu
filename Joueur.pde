@@ -3,7 +3,7 @@ class Joueur extends Objet {
   public Joueur(int x, int y)
   {
     super(x, y);
-    animationSet = new AnimationSet(ressources.tileset("ennemi"), 6, 0);
+    animationSet = new AnimationSet(ressources.tileset("joueur"), 6, 0);
      this.pv = 100;
     if (niveau == 1) {
       arme = new Pistolet(this);

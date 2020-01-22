@@ -62,6 +62,7 @@ class Dougie extends Ennemi {
   {
     super(x, y);
     animationSet = new AnimationSet(ressources.tileset("dougie"), 1, 0);
+    pv = 2;
   }
   
   public void evoluer(float duree)
@@ -73,7 +74,9 @@ class Dougie extends Ennemi {
     if ((vitesse.x > 0 && objetsContact[DROITE] != null && objetsContact[DROITE] != monde.joueur) || 
         (vitesse.x < 0 && objetsContact[GAUCHE] != null && objetsContact[GAUCHE] != monde.joueur)) 
       sauter();
-    super.evoluer(duree);
+    if (monde.joueur.forme.getCenter().dist(forme.getCenter()) < TILE_W + 5)
+      exploser();
+    evoluerObjet(duree);
   }
   
   public void traiterCollision(Objet o)
@@ -91,11 +94,12 @@ class Dougie extends Ennemi {
 class Boss extends Ennemi {
   
   public String nom;
+  public int pvmax;
   
   public Boss(int x, int y, String nom)
   {
     super(x, y);
-    this.pv = 220;
+    this.pv = pvmax = 220;
     this.nom = nom;
     this.degats = 5;
   }
@@ -108,9 +112,15 @@ class BossStan extends Boss {
   public BossStan(int x, int y)
   {
     super(x, y, "Stan");
-    pv = 250;
+    this.pv = pvmax = 200;
     dest = new PVector(x,y);
     arme = new PistoletFocus(this);
+    
+    animationSet = new AnimationSet(ressources.tileset("stan"), 4, 0);
+    imageWidth = TILE_W  * 3;
+    imageHeight = TILE_H * 3;
+    forme = new Rectangle(position, TILE_W - 1, TILE_H * 3 - 1);
+    imageX = -TILE_W + 3;
   }
   
   public void evoluer(float duree)
@@ -123,20 +133,17 @@ class BossStan extends Boss {
       {
         case 3:
         case 2:
-          if (now - lastStan > 8000)
+          if (now - lastStan > 5000)
           {
-            for (int i = 0; i < 3; i++)
-            {
-              Ennemi ennemi = new Ennemi((int) monde.joueur.position.x - 200, (int) monde.joueur.position.y - i * 33);
-              if (monde.checkCollision(ennemi) == null)
-                monde.ennemis.add(ennemi);
-            }
+            Ennemi ennemi = new Ennemi((int) monde.joueur.position.x - 300, (int) monde.joueur.position.y);
+            if (monde.checkCollision(ennemi) == null)
+              monde.ennemis.add(ennemi);
             lastStan = now;
           }
         case 1 :
-          if (now - lastDougie > 8000)
+          if (now - lastDougie > 5000)
           {
-            monde.ennemis.add(new Dougie((int) monde.joueur.position.x - (random(1) > .5 ? 100 : -100), 20));
+            monde.ennemis.add(new Dougie((int) monde.joueur.position.x - (random(1) > .5 ? 300 : -300), 20));
             lastDougie = now;
           }
         case 0:
@@ -182,11 +189,13 @@ class BossColt extends Boss {
     forme = new Rectangle(position, TILE_W * 2 - 1, TILE_H * 2 - 1);
     arme = new Shotgun(this);
     last = 0;
+    
+    this.pv = pvmax = 500;
   }
   
   public void evoluer(float duree)
   {
-    if (pv < 110)
+    if (pv < 250)
       arme = new Mitraillette(this);
     if (millis() - last > (tirer ? 3000 : 5000))
     {

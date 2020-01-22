@@ -153,7 +153,9 @@ class AnimationSet{
   
   void change(int key)
   {
-    	anims.get(current).pause();
-      current = key;
+    	if (key >=0 && key < current) {
+        anims.get(current).pause();
+        current = key;
+    }
   }
 }

@@ -256,13 +256,13 @@ class Monde {
       
     popMatrix();
 
-    dessinerBarreDeVie(joueur.pv, 60, 10, height - 25, 100, 20);
+    dessinerBarreDeVie(joueur.pv, 100, 10, height - 25, 100, 20);
     
     if (boss != null && vue.estDansVue(boss))
     {
        textSize(24);
        text(boss.nom, width - 300, height - 15);
-       dessinerBarreDeVie(monde.boss.pv, 220, width - 230, height - 25, 200, 20);
+       dessinerBarreDeVie(monde.boss.pv, monde.boss.pvmax, width - 230, height - 25, 200, 20);
     }
   }
   

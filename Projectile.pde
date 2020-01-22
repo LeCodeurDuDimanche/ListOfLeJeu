@@ -35,7 +35,7 @@ class Projectile extends Objet {
   
   public void afficher()
   {
-    image(ressources.get("tir"), position.x - 5, position.y - 5, 10, 10);
+    image(tireur == monde.joueur ? ressources.get("flechette") : ressources.get("tir"), position.x - 5, position.y - 5, 10, 10);
   }
   
   public boolean affecte(Objet o)

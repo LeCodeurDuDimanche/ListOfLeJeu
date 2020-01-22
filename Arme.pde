@@ -50,7 +50,7 @@ class Arme {
 class PistoletFocus extends Arme {
 
   public PistoletFocus(Objet owner) {
-    super(owner, 1, true, 20);
+    super(owner, .5, true, 20);
   }
   
   protected void tirer(PVector position) {
@@ -98,7 +98,10 @@ class LanceGrenade extends Arme{
   protected void tirer(PVector position) {
     int mult = owner.regardeDroite ? 1 : -1;
     position.add(mult * 10, 0);
-    PVector vitesse = new PVector(mult * 100, -600);
+    PVector vitesse = new PVector(mult * 100 , -600);
+    
+    if (monde.joueur == owner)
+      vitesse.set(vitesse.x * 0.6, vitesse.y * 0.8);
     
     for (int i = 0; i < 3; i++)
     {
