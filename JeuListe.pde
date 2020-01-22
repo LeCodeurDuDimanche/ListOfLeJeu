@@ -1,3 +1,6 @@
+import processing.sound.*;
+SoundFile musique;
+
 Monde monde;
 Clavier clavier;
 Images ressources;
@@ -23,6 +26,8 @@ void setup()
   niveau = 1;
   monde = new Monde(sketchPath() + "/niveau-" + niveau + ".lvl");
   monde.calculerAffichage();
+  musique = new SoundFile(this, "musique-" + niveau + ".mp3");
+  musique.play();
   
   clavier = new Clavier();
   
