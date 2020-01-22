@@ -1,4 +1,3 @@
-import processing.sound.*;
 //SoundFile musique;
 
 Monde monde;
@@ -24,7 +23,7 @@ void setup()
   font = createFont("airstrike.ttf", 42);
   textFont(font);
   
-  niveau = 3;
+  niveau = 1;
   monde = new Monde(sketchPath() + "/niveau-" + niveau + ".lvl");
   monde.calculerAffichage();
   fond = "fond-" + niveau;

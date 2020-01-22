@@ -75,10 +75,10 @@ class Shotgun extends Arme {
     
     for (int i = -2; i <= 2; i++)
     {
-      PVector vitesseProj = new PVector(vitesse.x, vitesse.y).rotate(PI/ 18 * i);
+      PVector vitesseProj = new PVector(vitesse.x, vitesse.y).rotate(PI/ 22 * i);
       Projectile proj = new Projectile(position, vitesseProj, owner);
       proj.degats = degats;
-      proj.distance = 150;
+      proj.distance = 300;
       monde.ajouterProjectile(proj);
     }
   }

@@ -15,12 +15,17 @@ class Ennemi extends Objet {
     arme.cadenceTir = 0.3;
   }
   
-  public void evoluer(float duree)
+  public void evoluerObjet(float duree)
   {
-    evoluer(duree, true);
+    super.evoluer(duree);
   }
   
-  public void evoluer(float duree, boolean bouger)
+  public void evoluer(float duree)
+  {
+    evoluer(duree, true, true);
+  }
+  
+  public void evoluer(float duree, boolean bouger, boolean tirer)
   {
     PVector dest;
     if (monde.joueur.distanceSq(this) > 80000 || abs(monde.joueur.position.y - position.y) > TILE_H * 3)
@@ -32,7 +37,7 @@ class Ennemi extends Objet {
     else
     {
       dest = monde.joueur.position;
-      if (abs(monde.joueur.position.y - position.y) < imageHeight * 1.2 && (!bouger || monde.joueur.distanceSq(this) < 50000))
+      if (tirer && abs(monde.joueur.position.y - position.y) < imageHeight * 1.2 && (!bouger || monde.joueur.distanceSq(this) < 50000))
         tirer();
     }
     if (bouger && PVector.sub(monde.joueur.position, position).add(TILE_W / 2, TILE_H / 2).magSq() > 4 * TILE_W * TILE_W)
@@ -97,7 +102,7 @@ class Boss extends Ennemi {
 }
 
 class BossStan extends Boss {
-  private long lastMove, lastDougie;
+  private long lastMove, lastDougie, lastStan;
   private PVector dest;
   
   public BossStan(int x, int y)
@@ -108,7 +113,7 @@ class BossStan extends Boss {
     arme = new PistoletFocus(this);
   }
   
-  public void evoluer(float duree, boolean bouger)
+  public void evoluer(float duree)
   {
     if (monde.joueur.position.dist(position) < 500)
     {
@@ -118,7 +123,16 @@ class BossStan extends Boss {
       {
         case 3:
         case 2:
-          //Stans
+          if (now - lastStan > 8000)
+          {
+            for (int i = 0; i < 3; i++)
+            {
+              Ennemi ennemi = new Ennemi((int) monde.joueur.position.x - 200, (int) monde.joueur.position.y - i * 33);
+              if (monde.checkCollision(ennemi) == null)
+                monde.ennemis.add(ennemi);
+            }
+            lastStan = now;
+          }
         case 1 :
           if (now - lastDougie > 8000)
           {
@@ -133,10 +147,11 @@ class BossStan extends Boss {
           }
           arme.utiliser();
           break;
-        
       }
     }
-    super.evoluer(duree);
+    
+    vitesse = PVector.sub(dest, position).setMag(80);
+    evoluerObjet(duree);
   }
 }
 
@@ -154,6 +169,10 @@ class BossBreak extends Boss {
 }
 
 class BossColt extends Boss {
+  
+  public boolean tirer;
+  public long last; 
+  
   public BossColt(int x, int y)
   {
     super(x, y, "Colt");
@@ -162,13 +181,19 @@ class BossColt extends Boss {
     imageHeight = TILE_H * 2;
     forme = new Rectangle(position, TILE_W * 2 - 1, TILE_H * 2 - 1);
     arme = new Shotgun(this);
+    last = 0;
   }
   
   public void evoluer(float duree)
   {
     if (pv < 110)
       arme = new Mitraillette(this);
-    super.evoluer(duree, false);
+    if (millis() - last > (tirer ? 3000 : 5000))
+    {
+      tirer = !tirer;
+      last = millis();
+    }
+    super.evoluer(duree, false, tirer);
   }
   
 }
