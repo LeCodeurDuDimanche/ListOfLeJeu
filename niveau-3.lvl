@@ -1,0 +1,29 @@
+# Taille de la map, en tiles
+65 20
+
+# Format : TypeObjet x y
+# x : x1[[:x2];increment] => de x1 a x2 tous les increment
+# y : y1[[:y2];increment]
+# TypeObjet: P plateforme, E ennemi, O objet (+ est_destructible est_mobile pv degats), J joueur
+
+P 3:11 10
+P 16:24 5
+P 12:15 17:20
+P 15:19 14:20
+P 25:33 10
+P 36:40 5
+P 0:100 18:20
+P 45:50 15:20
+
+J 128 288
+
+E 352 288
+E 5 640
+E 608 288
+E 1184 128
+
+
+O 960 520 true true 0 100
+
+
+BossColt 1850 400
