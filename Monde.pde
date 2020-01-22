@@ -57,7 +57,7 @@ class Monde {
     
     vue = new Vue(joueur.position, width / TILE_W, height / TILE_H, w, h);
     
-    gravite = new PVector(0, 5);
+    gravite = new PVector(0, 350);
   }
   
   private void loadObjet(int x, int y, String[] tokens)

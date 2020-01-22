@@ -1,5 +1,5 @@
 import processing.sound.*;
-SoundFile musique;
+//SoundFile musique;
 
 Monde monde;
 Clavier clavier;
@@ -10,6 +10,7 @@ int niveau = 0, tries = 1;
 boolean perdu = false, animationFinNiveau = false, fini = false;
 long debutAnimation, compteur, totalTime, debut;
 float score = 0;
+String fond;
 
 PFont font;
 
@@ -26,8 +27,9 @@ void setup()
   niveau = 1;
   monde = new Monde(sketchPath() + "/niveau-" + niveau + ".lvl");
   monde.calculerAffichage();
-  musique = new SoundFile(this, "musique-" + niveau + ".mp3");
-  musique.play();
+  fond = "fond-" + niveau;
+  //musique = new SoundFile(this, "musique-" + niveau + ".mp3");
+ // musique.play();
   
   clavier = new Clavier();
   
@@ -42,7 +44,7 @@ void draw()
 {
   background(0);
   
-  image(ressources.get("fond-" + niveau), map(monde.vue.positionVue.x, 0, monde.w, -200, 0), map(monde.vue.positionVue.y, 0, monde.h, -200, 0), width + 200, height + 200);
+  image(ressources.get(fond), map(monde.vue.positionVue.x, 0, monde.w, -200, 0), map(monde.vue.positionVue.y, 0, monde.h, -50, 0), width + 200, height + 50);
   
   if (fini) {
     fill(100, 0, 0, 200);
@@ -153,6 +155,8 @@ void gererAnimations() {
       if (niveau < 3) {
         monde = new Monde(sketchPath() + "/niveau-" + niveau  + ".lvl");
         monde.calculerAffichage();
+        
+        fond = "fond-" + niveau;
       }
       else {
         fini = true;

@@ -53,7 +53,7 @@ class Objet {
   
   public void traiterCollision(Objet o)
   {
-    if (est_destructible)
+    if (est_destructible && o.pv > 0)
       this.pv -= o.degats;
   }
   
@@ -96,7 +96,7 @@ class Objet {
     for (int i = 0; i< 4; i++)
       objetsContact[i] = null;
     
-    appliquerForce(monde.gravite);
+    appliquerForce(PVector.mult(monde.gravite, duree));
     
     //On ajoute l'acceleraion a la vitesse
     vitesse.add(acceleration);

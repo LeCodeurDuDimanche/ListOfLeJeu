@@ -1,8 +1,8 @@
 import java.util.Map;
 
 class Images {
-  private String noms[] = {"ennemi", "terrain", "default", "joueur", "tir", "break", "explosion", "erlenmeier", "colt", "fond-1"};
-  private String fichiers[] = {"ennemi.png", "generic-platformer-tiles.png", "boite.png", "axel.png", "flamme.png", "break.png", "explosion.png", "erlenmeier.png", "colt.png", "desert.jpg"};
+  private String noms[] = {"ennemi", "terrain", "default", "joueur", "tir", "break", "explosion", "erlenmeier", "colt", "fond-1", "fond-2"};
+  private String fichiers[] = {"ennemi.png", "generic-platformer-tiles.png", "boite.png", "axel.png", "flamme.png", "break.png", "explosion.png", "erlenmeier.png", "colt.png", "desert.jpg", "western.jpg"};
   private String nomsTilesets[] = {"ennemi", "terrain", "joueur", "break", "explosion", "colt"};
   private int taillesTilesets[][] = { {2, 4}, {12, 8}, {2, 4}, {4, 4}, {9, 9}, {4, 4}};
   private Map<String, PImage> images;
