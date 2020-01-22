@@ -1,5 +1,24 @@
 import java.util.HashMap;
 
+class AnimationRect{
+  public int x, y, w, h;
+  public Animation animation;
+  
+  public AnimationRect(Animation a, int x, int y, int w, int h)
+  {
+    this.animation = a;
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+  }
+  
+  public void afficher()
+  {
+    image(animation.getFrame(), x, y, w, h);
+  }
+}
+
 class Animation{
 
   private ArrayList<PImage> frames;
@@ -37,7 +56,7 @@ class Animation{
   
    if (now-lastTime>delay)
    {
-     index++;
+     index += (now - lastTime) / delay;
      index %= frames.size();
      wasReset = index == 0;
      lastTime=now;

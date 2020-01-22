@@ -10,6 +10,7 @@ class Objet {
   public Objet[] objetsContact;
   public Arme arme;
   public AnimationSet animationSet;
+  public int imageWidth, imageHeight, imageX;
   
   public Objet(int x, int y) 
   {
@@ -29,6 +30,9 @@ class Objet {
     forme = new Rectangle(position, TILE_W - 1, TILE_H - 1);
     regardeDroite = true;
     arme = null;
+    imageWidth = TILE_W;
+    imageHeight = TILE_H;
+    imageX= 0;
   }
   
   public boolean checkCollision(Objet o)
@@ -67,11 +71,11 @@ class Objet {
         animationSet.change(1);
       
       pushMatrix();
-      translate(position.x + TILE_W / 2, 0);
+      translate(position.x + imageWidth / 2 + imageX, 0);
       if (!regardeDroite)
         scale(-1, 1);
         
-      image(animationSet.getFrame(), -TILE_W / 2, position.y, TILE_W, TILE_H);
+      image(animationSet.getFrame(), - imageWidth / 2, position.y, imageWidth, imageHeight);
       popMatrix();
     }
   }

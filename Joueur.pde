@@ -4,7 +4,16 @@ class Joueur extends Objet {
   {
     super(x, y);
     animationSet = new AnimationSet(ressources.tileset("ennemi"), 6, 0);
-    arme = new Pistolet(this);
+     this.pv = 60;
+    if (niveau == 1) {
+      arme = new Pistolet(this);
+      arme.cadenceTir = 1.5;
+    }
+    else if (niveau == 2)
+    {
+      arme = new LanceGrenade(this);
+      arme.cadenceTir = .8;
+    }
   }
 
   public void evoluer(float duree)

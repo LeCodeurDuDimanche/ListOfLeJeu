@@ -61,6 +61,7 @@ class Shotgun extends Arme {
       PVector vitesseProj = new PVector(vitesse.x, vitesse.y).rotate(PI/ 18 * i);
       Projectile proj = new Projectile(position, vitesseProj, owner);
       proj.degats = degats;
+      proj.distance = 150;
       monde.ajouterProjectile(proj);
     }
   }
@@ -72,9 +73,39 @@ class Pistolet extends Arme{
   }
 }
 
+class LanceGrenade extends Arme{
+  public LanceGrenade(Objet owner){
+    super(owner, .3, true, 100);
+  }
+  
+  protected void tirer(PVector position) {
+    int mult = owner.regardeDroite ? 1 : -1;
+    position.add(mult * 10, 0);
+    PVector vitesse = new PVector(mult * 100, -600);
+    
+    for (int i = 0; i < 3; i++)
+    {
+      PVector vitesseProj = new PVector(vitesse.x, vitesse.y).rotate(mult * PI / 32 * i);
+      Grenade proj = new Grenade(position, vitesseProj, owner);
+      proj.degats = degats;
+      monde.ajouterProjectile(proj);
+    }
+  }
+}
+
 class Mitraillette extends Arme {
   public Mitraillette(Objet owner){
     super(owner, 4, true, 15);
+  }
+  
+  
+   protected void tirer(PVector position) {
+    position.add(owner.regardeDroite ? 10 : -10, 0);
+    PVector vitesse = new PVector(owner.regardeDroite ? 500 : -500, 0);
+    PVector vitesseProj = new PVector(vitesse.x, vitesse.y).rotate(PI / 32 * random(-1, 1));
+    Projectile proj = new Projectile(position, vitesseProj, owner);
+    proj.degats = degats;
+    monde.ajouterProjectile(proj);
   }
 }
 

@@ -10,7 +10,7 @@ class Projectile extends Objet {
     this.tireur = tireur;
     this.degats = 25;
     forme = new Cercle(position, 5);
-    distance = 200;
+    distance = 500;
   }
   
   public void traiterCollision(Objet o)
@@ -43,5 +43,59 @@ class Projectile extends Objet {
       return this.affecte(((Projectile) o).tireur);
       
     return true;
+  }
+}
+
+class Grenade extends Projectile {
+  
+  public Grenade(PVector pos, PVector vitesse, Objet tireur)
+  {
+    super(pos, vitesse, tireur);
+    this.degats = 20;
+    forme = new Cercle(position, 12);
+    distance= 2500;
+  }
+  
+  public void traiterCollision(Objet o)
+  {
+     this.pv = 0;
+     exploser();
+  }
+  
+  public void exploser()
+  {
+     Tileset exp = ressources.tileset("explosion");
+     monde.animations.add(new AnimationRect(new Animation(exp, 0, exp.getTileX() * exp.getTileY() - 1, 100), (int) position.x, (int) position.y, 50, 50));
+
+     Projectile obj = new Projectile(position, new PVector(), this);
+     obj.forme = new Cercle(obj.position, 40);
+     
+     Objet collider = monde.checkCollision(obj, this);
+     int i = 0;
+     while (collider != null && collider != monde.joueur && collider != monde.boss && i++ < 20)
+     {
+       if (collider.est_destructible) collider.pv = 0;
+       collider = monde.checkCollision(obj);
+     }
+     
+     if (collider == monde.joueur) monde.joueur.pv -= degats;
+      
+  }
+  
+  public void evoluer(float duree)
+  { 
+    appliquerForce(monde.gravite);
+     super.evoluer(duree);
+  }
+  
+  public void afficher()
+  {
+    pushMatrix();
+    translate(position.x - 12, position.y - 12);
+    
+    rotate(millis() / 300.0);
+    
+    image(ressources.get("erlenmeier"),  0, 0, 24, 24);
+    popMatrix();
   }
 }

@@ -4,7 +4,7 @@ class Plateforme extends Objet {
   
   public Plateforme(int x, int y)
   {
-    super(x * TILE_W, y * TILE_H, false, true, 50, 0); 
+    super(x * TILE_W, y * TILE_H, false, true, 30, 0); 
   }
   
   public void calculerAffichage()
@@ -29,7 +29,15 @@ class Plateforme extends Objet {
   
   public void afficher()
   {
-    
+   if (!est_destructible)
+      tint(150);
    image(ressources.tileset("terrain").get(indice), position.x, position.y, TILE_W, TILE_H);
+   tint(255);
+  }
+  
+   public void traiterCollision(Objet o)
+  {
+    if (!o.isPerso() && est_destructible)
+      this.pv -= o.degats;
   }
 }

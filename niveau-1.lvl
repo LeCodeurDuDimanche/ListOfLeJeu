@@ -1,27 +1,41 @@
 # Taille de la map, en tiles
-50 20
+65 20
 
 # Format : TypeObjet x y
 # x : x1[[:x2];increment] => de x1 a x2 tous les increment
 # y : y1[[:y2];increment]
 # TypeObjet: P plateforme, E ennemi, O objet (+ est_destructible est_mobile pv degats), J joueur
 
-P 0:50 19
-P 0:50 18
+P 0:60 19
+P 0:60 18
+P 0:60 17
+P 0 2:17
+P 1:4 4:8
+P 5 5:8
+P 6 7:8
+P 8 9:10
+P 2:8 11:14
+P 9 2:15
+P 10 4:14
+P 11 5:15
 
-J 5 480
+J 35 90
 
-E 500 480
-E 950 480
-E 1400 480
-E 2000 480
-E 2500 480
+E 200 290
+E 200 500
+E 1200 480
+E 1300 480
+E 1350 480
+E 700 400
 
 
+P 18 17
+P 19 15:17
+P 20 15:17
 P 20:30 14
 P 32:40 10
 P 31 12
-P 20 15:17
-
 O 200 100 true true 100 0
-O 233 400:480;33 true true 100 0
+
+
+BossBreak 1850 400

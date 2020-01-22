@@ -1,11 +1,12 @@
 Monde monde;
 Clavier clavier;
 Images ressources;
-int TILE_W = 32, TILE_H = 32, ennemis = 0;
+int TILE_W = 32, TILE_H = 32;
 
-int niveau = 0;
-boolean perdu = false, animationFinNiveau = false;
-long debutAnimation;
+int niveau = 0, tries = 1;
+boolean perdu = false, animationFinNiveau = false, fini = false;
+long debutAnimation, compteur, totalTime, debut;
+float score = 0;
 
 PFont font;
 
@@ -20,13 +21,13 @@ void setup()
   textFont(font);
   
   niveau = 1;
-  monde = new Monde(sketchPath() + "/niveau-1.lvl");
-  ennemis = monde.ennemis.size();
+  monde = new Monde(sketchPath() + "/niveau-" + niveau + ".lvl");
   monde.calculerAffichage();
   
   clavier = new Clavier();
   
   debutAnimation = millis();
+  debut = millis();
   
   textSize(40);
   textAlign(CENTER, CENTER);
@@ -35,6 +36,18 @@ void setup()
 void draw()
 {
   background(0);
+  
+  if (fini) {
+    fill(100, 0, 0, 200);
+    rect(0, height / 2 - height / 4, 0, height / 2);
+    fill(255);
+    textSize(42);
+    text("Vous êtes une légende", width / 2, height / 2 - 50);
+    textSize(24);
+    text("Score : " + (int)score, width / 2, height / 2 + 50);
+    return;
+  }
+  
   
   if (perdu) {
     monde.afficher();
@@ -51,6 +64,8 @@ void draw()
       monde.calculerAffichage();
       perdu = false;
      }
+     tries++;
+     debut = millis();  
     
   }
   else if (animationFinNiveau)
@@ -63,7 +78,7 @@ void draw()
     if (! monde.evoluer())
       chargerNiveau(-1);
     
-    if (monde.ennemis.size() == 0)
+    if (monde.joueur.pv >0 && monde.boss == null && monde.ennemis.size() == 0 || monde.boss != null && monde.boss.pv <= 0)
       chargerNiveau(niveau + 1);
     
     monde.afficher();
@@ -82,7 +97,12 @@ void draw()
     {
       monde.joueur.tirer();
     }
+    compteur = millis() - debut;
   }
+  
+  fill(255);
+  textSize(16);
+  text(nf(compteur / 1000., 0, 2), 30, 15);
 }
 
 void gererAnimations() {
@@ -104,12 +124,12 @@ void gererAnimations() {
    if (t >= 1800)
    {
      textSize(24);
-     text(ennemis + " stans tués", width / 2, height / 2);
+     text(monde.ennemisDetruits + " ennemis tués", width / 2, height / 2);
    }
    if (t >= 2500)
      text(monde.objetsDetruits + " objets détruits", width / 2, height / 2 + 45);
    if (t >= 3000)
-     text(monde.tirs + " balles tirées", width / 2, height / 2 + 90);
+     text(monde.tirs + " munitions utilisées", width / 2, height / 2 + 90);
      
      
    if (t >= 3300)
@@ -119,9 +139,19 @@ void gererAnimations() {
      {
        animationFinNiveau = false;
        
-      monde = new Monde(sketchPath() + "/niveau-" + niveau  + ".lvl");
-      monde.calculerAffichage();
-      ennemis = monde.ennemis.size();
+      totalTime += compteur;
+      debut = millis();
+      score += 1000 * monde.objetsDetruits + 3000 * monde.ennemisDetruits + 10000;
+      
+      if (niveau < 3) {
+        monde = new Monde(sketchPath() + "/niveau-" + niveau  + ".lvl");
+        monde.calculerAffichage();
+      }
+      else {
+        fini = true;
+        
+        score = score / ((totalTime / 10000) * sqrt(tries));
+      }
      }
      
    }
